@@ -1,11 +1,8 @@
 # Law of the Cosmos (Docs)
 
-# Objectives
-
-- Simple Deployments: Bootstrapping + Changes to the infrastructure.
-- Libraries: High level CDK patterns
-- AWS Native First
-- Performance and Reliability
+# Problems
+- Not easy to rebuild infra
+- Hard to understand the infra architecture
 
 # Features
 
@@ -15,3 +12,11 @@
 - Initial base pipeline to deploy application
 - Blue Green deployment + Delayed/Approval based switch
 - Easy rollbacks
+
+# Objectives
+
+- Enterprise Infrastructure 
+- Simple Deployments: Bootstrapping + Changes to the infrastructure.
+- Libraries: High level CDK patterns
+- AWS Native First
+- Performance and Reliability
