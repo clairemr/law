@@ -1,22 +1,8 @@
-# Law of the Cosmos (Docs)
+# Welcome to the Law of the Cosmos (Docs)
 
-# Problems
-- Not easy to rebuild infra
-- Hard to understand the infra architecture
+This is the GitHub repository for the **AWS CDK Cosmos Guide**
 
-# Features
+## Project Board
 
-- Minimal Repos per app. E.G. Code repo + CDK repo per app. (Could be less?)
-- Auto Tagging and Logging for high level constructs
-- Auto DNS names for services. (internal? lb ?) (able to hit internally first before public ?)
-- Initial base pipeline to deploy application
-- Blue Green deployment + Delayed/Approval based switch
-- Easy rollbacks
-
-# Objectives
-
-- Enterprise Infrastructure 
-- Simple Deployments: Bootstrapping + Changes to the infrastructure.
-- Libraries: High level CDK patterns
-- AWS Native First
-- Performance and Reliability
+Have a look at the AWS CDK Developer Guide [Project Board](https://github.com/orgs/cdk-cosmos/projects/1) 
+to see what we're working on at the moment. 
