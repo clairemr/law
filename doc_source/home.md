@@ -1,6 +1,6 @@
 # What is CDK Cosmos?
 
-CDK Cosmos is a collection of libraries and patterns created using AWS CDK. It encapsulate common patterns and practices followed in enterprises to create infrastructure in AWS. Many organisations use different implementations of AWS design patterns for example to achieve high availability, disaster recovery, security, AWS Organisations etc. Cosmos tries to use those pattern to setup your AWS infrastructure portfolio. It simplifies complex component infrastructure and wraps them into higher level constructs.
+CDK Cosmos is a collection of libraries and patterns created using AWS CDK. It encapsulate common patterns and practices followed in enterprises to create infrastructure in AWS. Many organizations use different implementations of AWS design patterns for example to achieve high availability, disaster recovery, security, AWS Organizations etc. Cosmos tries to use those pattern to setup your AWS infrastructure portfolio. It simplifies complex component infrastructure and wraps them into higher level constructs.
 
 For more information on AWS-CDK, checkout the official documentations from AWS [here](https://docs.aws.amazon.com/cdk/latest/guide/home.html).
 

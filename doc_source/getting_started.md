@@ -47,7 +47,7 @@ There are 2 sets of Template repositories which can help quickly getting started
 
 1. Clone this repo (https://github.com/cdk-cosmos/cosmos-core-cdk.git).
 2. Run `npm install`
-3. Open `bin/main.ts` and change the project name from `DemoCore` to your core project name.
+3. Open `bin/main.ts` and change the project name from `Demo` to your core project name.
    - Also change cidr ranges for galaxies (Accounts)
    - Also Change anything else as needed.
    - Though We recommend you leave any solar system disabled during bootstrap (Enabled later).
@@ -59,4 +59,13 @@ There are 2 sets of Template repositories which can help quickly getting started
 9. Your Done: Now use the core cdk pipeline to deploy any further changes to your app cdk code.
 
 ### Extension Infrastructure (For an App to consume the Core)
+
+1. Clone this repo (https://github.com/cdk-cosmos/cosmos-extension-cdk.git).
+2. Run `npm install`
+3. Open `bin/main.ts` and change the project name from `Demo` to your app name.
+4. Aws Cli Login.
+5. Bootstrap, run `npx cdk deploy App-${Project}-${Account}-CiCd-SolarSystem` (Please change to your project and account name).
+6. Update git remote url `git remote set-url origin "https://git-codecommit.ap-southeast-2.amazonaws.com/v1/repos/app-${Project}-cdk-repo"` (Please change Project and region etc as required).
+7. Commit your changes and Push your custom version of the template to your app cdk repo, `git commit && git push`
+8. Done: Now use the app cdk pipeline to deploy any further changes to your app cdk code (Pipeline Named `App-${Project}-Cdk-Pipeline`)
 
