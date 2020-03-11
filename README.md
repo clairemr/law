@@ -1,4 +1,6 @@
-# Welcome to the Law of the Cosmos (Docs)
+![cosmos_logo](assets/cdk-cosmos.png)
+
+# Welcome to the Law of the Cosmos (Docs) 
 
 This is the GitHub repository for the **AWS CDK Cosmos Guide**
 

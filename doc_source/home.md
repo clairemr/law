@@ -20,4 +20,4 @@ Cosmos is broken down into 3 scopes (Bubbles)
 - **Galaxy**: Account level scope that defines infrastructure for an aws account.
 - **SolarSystem**: Environment level scope that defines infrastructure for an environment with in an aws account (Dev, Tst, Prd).
 
-![cosmos_img](cosmos_overview.png)
+![cosmos_img](../assets/cosmos_overview.png)
