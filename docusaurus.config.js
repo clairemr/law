@@ -1,11 +1,11 @@
 module.exports = {
   title: "My Site",
   tagline: "The tagline of my site",
-  url: "https://your-docusaurus-test-site.com",
-  baseUrl: "/",
+  url: "https://cdk-cosmos.github.io/law/",
+  baseUrl: "/law/",
   favicon: "img/favicon.ico",
-  organizationName: "CdkCosmos", // Usually your GitHub org/user name.
-  projectName: "Cosmos", // Usually your repo name.
+  organizationName: "CdkCosmos",
+  projectName: "Cosmos",
   themeConfig: {
     navbar: {
       title: "My Site",
