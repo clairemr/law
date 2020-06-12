@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { Application, TSConfigReader, ParameterType } from 'typedoc';
 import { MarkdownPlugin } from './plugin';
+import { GitHubPlugin } from './GitHubPlugin';
 
 const PROJECTS = [
   'packages/@cdk-cosmos/core/src/index.ts',
@@ -15,6 +16,11 @@ const app = new Application();
 app.options.addReader(new TSConfigReader());
 addOptions();
 app.converter.addComponent('markdown', new MarkdownPlugin(app.converter));
+
+// TODO: remove when released https://github.com/TypeStrong/typedoc/compare/v0.17.7...master
+app.converter.removeComponent('git-hub');
+app.converter.addComponent('git-hub', new GitHubPlugin(app.converter));
+
 app.bootstrap({
   mode: 'library',
   excludeExternals: true,
