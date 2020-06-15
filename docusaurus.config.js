@@ -1,16 +1,16 @@
 module.exports = {
-  title: "My Site",
-  tagline: "The tagline of my site",
-  url: "https://cdk-cosmos.github.io/law/",
-  baseUrl: "/law/",
+  title: "Cdk Cosmos Law",
+  tagline: "The Law that binds the Cosmos",
+  url: "https://cdk-cosmos.github.io/",
   favicon: "img/favicon.ico",
-  organizationName: "CdkCosmos",
-  projectName: "Cosmos",
+  organizationName: "cdk-cosmos",
+  projectName: "law",
+  baseUrl: "/law/",
   themeConfig: {
     navbar: {
-      title: "My Site",
+      title: "Cdk Cosmos",
       logo: {
-        alt: "My Site Logo",
+        alt: "Cdk Cosmos",
         src: "img/logo.svg",
       },
       links: [
@@ -21,7 +21,7 @@ module.exports = {
           position: "left",
         },
         {
-          href: "https://github.com/facebook/docusaurus",
+          href: "https://github.com/cdk-cosmos",
           label: "GitHub",
           position: "right",
         },
@@ -30,47 +30,17 @@ module.exports = {
     footer: {
       style: "dark",
       links: [
-        {
-          title: "Docs",
-          items: [
-            {
-              label: "Style Guide",
-              to: "docs/",
-            },
-            {
-              label: "Second Doc",
-              to: "docs/doc2/",
-            },
-          ],
-        },
-        {
-          title: "Community",
-          items: [
-            {
-              label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/docusaurus",
-            },
-            {
-              label: "Discord",
-              href: "https://discordapp.com/invite/docusaurus",
-            },
-            {
-              label: "Twitter",
-              href: "https://twitter.com/docusaurus",
-            },
-          ],
-        },
-        {
-          title: "More",
-          items: [
-            {
-              label: "GitHub",
-              href: "https://github.com/facebook/docusaurus",
-            },
-          ],
-        },
+        // {
+        //   title: "Docs",
+        //   items: [
+        //     {
+        //       label: "Style Guide",
+        //       to: "docs/",
+        //     },
+        //   ],
+        // },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} cdk-cosmos. Built with Docusaurus.`,
     },
   },
   presets: [
@@ -78,12 +48,9 @@ module.exports = {
       "@docusaurus/preset-classic",
       {
         docs: {
-          // It is recommended to set document id as docs home page (`docs/` path).
           homePageId: "index",
           sidebarPath: require.resolve("./sidebars.js"),
-          // Please change this to your repo.
-          editUrl:
-            "https://github.com/facebook/docusaurus/edit/master/website/",
+          editUrl: "https://github.com/cdk-cosmos/law/edit/master/",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),

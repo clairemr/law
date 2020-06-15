@@ -5,6 +5,7 @@
   "scripts": {
     "start": "docusaurus start",
     "build": "docusaurus build",
+    "deploy": "docusaurus deploy",
     "generate": "tsc --project cosmos-typedoc && copyfiles --up 2 cosmos-typedoc/src/**/*.hbs cosmos-typedoc/dist/ && node cosmos-typedoc/dist"
   },
   "dependencies": {

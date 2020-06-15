@@ -1,0 +1,32 @@
+name: documentation
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  gh-release:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Law Repo
+        uses: actions/checkout@v2
+        path: law
+      - name: Checkout Cosmos Repo
+        uses: actions/checkout@v2
+        repository: cdk-cosmos/cosmos
+        path: cosmos
+      - name: Setup Nodejs 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - name: Release to GitHub Pages
+        env:
+          GIT_USER: git
+        working-directory: law
+        run: |
+          git config --global user.email "actions@gihub.com"
+          git config --global user.name "gh-actions"
+          yarn
+          yarn generate
+          yarn deploy
