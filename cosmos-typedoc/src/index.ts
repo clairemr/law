@@ -37,6 +37,7 @@ title: "CDK Cosmos"
 sidebar_label: "README"
 ---
 `;
+if (!fs.existsSync('docs')) fs.mkdirSync('docs');
 fs.writeFileSync('docs/index.md', cosmosReadmeFrontMatter + '\n\n' + cosmosReadme);
 
 // Generate docs for each project
