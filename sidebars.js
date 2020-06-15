@@ -3,7 +3,7 @@ module.exports = {
   docs: [
     {
       type: "doc",
-      id: "index",
+      id: "README",
     },
     ...generated["docs"],
   ],

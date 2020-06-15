@@ -1,4 +1,5 @@
 import * as path from 'path';
+import * as fs from 'fs';
 import { Application, TSConfigReader, ParameterType } from 'typedoc';
 import { MarkdownPlugin } from './plugin';
 import { GitHubPlugin } from './GitHubPlugin';
@@ -28,6 +29,17 @@ app.bootstrap({
   plugin: [],
 });
 
+// Copy Cosmos Readme as the index of the Doc Site
+const cosmosReadme = fs.readFileSync('../cosmos/README.md').toString();
+const cosmosReadmeFrontMatter = `---
+id: "README"
+title: "CDK Cosmos"
+sidebar_label: "README"
+---
+`;
+fs.writeFileSync('docs/index.md', cosmosReadmeFrontMatter + '\n\n' + cosmosReadme);
+
+// Generate docs for each project
 PROJECTS.map((x) => app.convert([path.join('../cosmos', x)])).forEach((project) => {
   const success = app.generateDocs(project, path.join('docs', project.name));
   console.log(`${project.name}: ${success ? 'Success' : 'Fail'}`);

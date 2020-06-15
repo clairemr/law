@@ -48,7 +48,7 @@ module.exports = {
       "@docusaurus/preset-classic",
       {
         docs: {
-          homePageId: "index",
+          homePageId: "README",
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl: "https://github.com/cdk-cosmos/law/edit/master/",
         },
