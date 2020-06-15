@@ -25,6 +25,7 @@ jobs:
         working-directory: cosmos
         run: |
           yarn install
+          yarn build
       - name: Release to GitHub Pages
         working-directory: law
         env:
