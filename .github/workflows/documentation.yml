@@ -1,12 +1,11 @@
 name: documentation
 
 on:
-  pull_request:
-    types: [closed]
+  push:
+    branches: [master]
 
 jobs:
   gh-release:
-    if: github.event.pull_request.merged == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Law Repo
