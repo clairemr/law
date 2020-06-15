@@ -1,21 +1,24 @@
 name: documentation
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches: [master]
 
 jobs:
   gh-release:
-    if: github.event_name != 'pull_request'
+    if: github.event.pull_request.merged == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Law Repo
         uses: actions/checkout@v2
-        path: law
+        with:
+          path: law
       - name: Checkout Cosmos Repo
         uses: actions/checkout@v2
-        repository: cdk-cosmos/cosmos
-        path: cosmos
+        with:
+          repository: cdk-cosmos/cosmos
+          path: cosmos
       - name: Setup Nodejs 12.x
         uses: actions/setup-node@v1
         with:
