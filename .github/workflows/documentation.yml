@@ -27,13 +27,15 @@ jobs:
           yarn install
           yarn build
       - name: Git Login
-        uses: fregante/setup-git-token@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: law
+        run: |
+          git config --global user.email "actions@gihub.com"
+          git config --global user.name "gh-actions"
+          echo "machine github.com login git password ${{ secrets.GITHUB_TOKEN }}" > ~/.netrc
       - name: Release to GitHub Pages
         working-directory: law
         env:
-          GIT_USER: cdk-cosmos
+          GIT_USER: git
         run: |
           yarn install
           yarn generate
