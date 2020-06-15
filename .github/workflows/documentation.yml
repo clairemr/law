@@ -25,9 +25,9 @@ jobs:
         working-directory: cosmos
         run: yarn
       - name: Release to GitHub Pages
+        working-directory: law
         env:
           GIT_USER: git
-        working-directory: law
         run: |
           git config --global user.email "actions@gihub.com"
           git config --global user.name "gh-actions"
