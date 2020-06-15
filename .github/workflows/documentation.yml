@@ -23,7 +23,8 @@ jobs:
           node-version: "12.x"
       - name: Install Cosmos Deps
         working-directory: cosmos
-        run: yarn
+        run: |
+          yarn install
       - name: Release to GitHub Pages
         working-directory: law
         env:
@@ -31,6 +32,6 @@ jobs:
         run: |
           git config --global user.email "actions@gihub.com"
           git config --global user.name "gh-actions"
-          yarn
+          yarn install
           yarn generate
           yarn deploy
