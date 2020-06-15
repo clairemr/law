@@ -5,3 +5,5 @@ sidebar_label: "Index"
 ---
 
 # Index
+
+TODO: sync readme form cosmos repo
