@@ -33,7 +33,7 @@ jobs:
       - name: Release to GitHub Pages
         working-directory: law
         env:
-          GIT_USER: git
+          GIT_USER: cdk-cosmos
         run: |
           yarn install
           yarn generate
