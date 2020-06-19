@@ -3,14 +3,15 @@ import * as fs from 'fs';
 import { Application, TSConfigReader, ParameterType } from 'typedoc';
 import { MarkdownPlugin } from './plugin';
 import { GitHubPlugin } from './GitHubPlugin';
+import { NoInheritPlugin } from './no-inherit';
 
 const PROJECTS = [
-  'packages/@cdk-cosmos/core/src/index.ts',
-  'packages/@cosmos-building-blocks/common/src/index.ts',
-  'packages/@cosmos-building-blocks/network/src/index.ts',
-  'packages/@cosmos-building-blocks/pipeline/src/index.ts',
-  'packages/@cosmos-building-blocks/service/src/index.ts',
-  'packages/@cdk-cosmos/cdk-credentials-plugin/src/index.ts',
+  'packages/@cdk-cosmos/core/src',
+  'packages/@cosmos-building-blocks/common/src',
+  'packages/@cosmos-building-blocks/network/src',
+  'packages/@cosmos-building-blocks/pipeline/src',
+  'packages/@cosmos-building-blocks/service/src',
+  'packages/@cdk-cosmos/cdk-credentials-plugin/src',
 ];
 
 const app = new Application();
@@ -22,12 +23,20 @@ app.converter.addComponent('markdown', new MarkdownPlugin(app.converter));
 app.converter.removeComponent('git-hub');
 app.converter.addComponent('git-hub', new GitHubPlugin(app.converter));
 
+// No Inherit plugin
+app.converter.addComponent('no-inherit', new NoInheritPlugin(app.converter));
+
 app.bootstrap({
-  mode: 'library',
+  mode: 'file',
   excludeExternals: true,
+  excludeNotExported: true,
+  excludePrivate: true,
+  excludeProtected: true,
   theme: 'docusaurus2',
   plugin: [],
 });
+
+app.options.setValue('noInheritDefault', true);
 
 // Copy Cosmos Readme as the index of the Doc Site
 const cosmosReadme = fs.readFileSync('../cosmos/README.md').toString();
@@ -38,10 +47,10 @@ sidebar_label: "README"
 ---
 `;
 if (!fs.existsSync('docs')) fs.mkdirSync('docs');
-fs.writeFileSync('docs/index.md', cosmosReadmeFrontMatter + '\n\n' + cosmosReadme);
+fs.writeFileSync('docs/README.md', cosmosReadmeFrontMatter + '\n\n' + cosmosReadme);
 
 // Generate docs for each project
-PROJECTS.map((x) => app.convert([path.join('../cosmos', x)])).forEach((project) => {
+PROJECTS.map((project) => app.convert(app.expandInputFiles([path.join('../cosmos', project)]))).forEach((project) => {
   const success = app.generateDocs(project, path.join('docs', project.name));
   console.log(`${project.name}: ${success ? 'Success' : 'Fail'}`);
 });
@@ -94,6 +103,12 @@ function addOptions() {
   app.options.addDeclaration({
     help: 'Skips updating of the sidebar.json file when used with docusaurus or docusaurus2 theme',
     name: 'skipSidebar',
+    type: ParameterType.Boolean,
+  });
+
+  app.options.addDeclaration({
+    help: 'Enables noInherit by default',
+    name: 'noInheritDefault',
     type: ParameterType.Boolean,
   });
 }
