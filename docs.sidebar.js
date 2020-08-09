@@ -1,4 +1,4 @@
-const generated = require("./sidebars.generated.js");
+const generated = require("./generated.docs.sidebar.js");
 module.exports = {
   docs: [
     {

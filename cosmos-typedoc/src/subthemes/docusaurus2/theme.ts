@@ -11,7 +11,7 @@ export default class Docusaurus2Theme extends MarkdownTheme {
   constructor(renderer: Renderer, basePath: string) {
     super(renderer, basePath);
     // this.indexName = 'index';
-    this.sidebarName = 'sidebars.generated.js';
+    this.sidebarName = 'generated.docs.sidebar.js';
     renderer.addComponent('frontmatter', new FrontMatterComponent(renderer));
     this.listenTo(renderer, RendererEvent.END, this.onRendererEnd, 1024);
   }
