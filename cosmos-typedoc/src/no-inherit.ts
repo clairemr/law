@@ -2,7 +2,6 @@ import { Reflection, ReflectionKind, DeclarationReflection } from 'typedoc/dist/
 import { Component, ConverterComponent } from 'typedoc/dist/lib/converter/components';
 import { Converter } from 'typedoc/dist/lib/converter/converter';
 import { Context } from 'typedoc/dist/lib/converter/context';
-import { CommentPlugin } from 'typedoc/dist/lib/converter/plugins/CommentPlugin';
 import { Type, ReferenceType } from 'typedoc/dist/lib/models';
 import { BindOption } from 'typedoc/dist/lib/utils/options/options';
 
@@ -61,8 +60,8 @@ export class NoInheritPlugin extends ConverterComponent {
           (this.noInheritDefault && !reflection.comment?.hasTag('inheritdoc')))
       ) {
         this.noInherit.push(reflection);
-        CommentPlugin.removeTags(reflection.comment, 'noinheritdoc');
-        CommentPlugin.removeTags(reflection.comment, 'inheritdoc');
+        reflection.comment?.removeTags('noinheritdoc');
+        reflection.comment?.removeTags('inheritdoc');
       }
       // class or interface member inherited from a super
       if (
@@ -97,7 +96,7 @@ export class NoInheritPlugin extends ConverterComponent {
       });
 
       removals.forEach((removal) => {
-        CommentPlugin.removeReflection(project, removal);
+        project.removeReflection(removal, true);
       });
     }
   }
