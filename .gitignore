@@ -20,4 +20,4 @@ yarn-debug.log*
 yarn-error.log*
 
 docs
-sidebars.generated.js
+generated.docs.sidebar.js

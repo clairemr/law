@@ -34,6 +34,7 @@ app.bootstrap({
   excludeProtected: true,
   theme: 'docusaurus2',
   plugin: [],
+  tsconfig: '../cosmos/tsconfig.base.json',
 });
 
 app.options.setValue('noInheritDefault', true);
@@ -50,10 +51,16 @@ if (!fs.existsSync('docs')) fs.mkdirSync('docs');
 fs.writeFileSync('docs/README.md', cosmosReadmeFrontMatter + '\n\n' + cosmosReadme);
 
 // Generate docs for each project
-PROJECTS.map((project) => app.convert(app.expandInputFiles([path.join('../cosmos', project)]))).forEach((project) => {
-  const success = app.generateDocs(project, path.join('docs', project.name));
-  console.log(`${project.name}: ${success ? 'Success' : 'Fail'}`);
-});
+PROJECTS.map((project) => {
+  const projectReflection = app.convert(app.expandInputFiles([path.join('../cosmos', project)]));
+  if (!projectReflection) console.log(`${project}: Failed to Build`);
+  return projectReflection;
+})
+  .filter((project) => project)
+  .forEach((project) => {
+    const success = app.generateDocs(project, path.join('docs', project.name));
+    console.log(`${project.name}: ${success ? 'Success' : 'Fail'}`);
+  });
 
 function addOptions() {
   app.options.addDeclaration({
