@@ -1,6 +1,6 @@
 {
   "name": "cosmos-law",
-  "version": "0.7.0",
+  "version": "0.7.3",
   "private": true,
   "scripts": {
     "start": "docusaurus start",
