@@ -75,9 +75,6 @@ function Home() {
         </div>
       </header>
       <main>
-        <div><p>isolated resources,
-            sharable patterns. insert sales pitch here
-          </p></div>
         {features && features.length > 0 && (
           <section className={styles.features}>
             <div className="container">
