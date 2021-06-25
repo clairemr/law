@@ -6,8 +6,13 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Quickstart",
+      items: ["quickstart"],
+    },
+    {
+      type: "category",
       label: "Getting Started",
-      items: ["getting_started_core"],
+      items: ["getting_started_bootstrap", "getting_started_core", "getting_started_extension"],
     },
   ],
 };
