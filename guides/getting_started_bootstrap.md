@@ -15,8 +15,8 @@ This template is flavoured for ECS and the walkthrough will deploy a Hello World
 This is where you will identify the accounts in the Cosmos pattern, e.g. mgt, dev, prod, and configure the needed resources.
 1. Complete the configuration objects with your account numbers and regions
 2. Change the project name from `Demo` to the name of your Core
-3. Replace the TLD (top level domain) with the correct one for your project
-3. Add the appropriate CIDR ranges
+3. Replace the TLD (top level domain) with the correct one for your project (e.g. mycosmosproject.com)
+3. Add the appropriate CIDR ranges (Learn More)[https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html]
 
 ### Bootstrap the bootstrapper
 At this point you have reached the minimal requirements to bootstrap your Cosmos Core. We don't recommend adding any further resources until the bootstrapping process is complete. When bootstrapping the bootstrapper, you will need to be using an IAM role able to create and edit policies.
@@ -25,6 +25,7 @@ Deploying the Cosmos CDK Toolkit requires the following environment variables to
 
 - `AWS_MASTER_ACCOUNT`: Your management account in a typical multi-account pattern.
 - `AWS_ACCOUNT`: The account in which the Cosmos CDK Toolkit will be deployed. This may be the master account.
+- Your AWS credentials (for an IAM role able to create and edit policies)
 
 For example:
 
@@ -39,7 +40,7 @@ Then use the below command to deploy the Cosmos CDK Toolkit resources to your en
 - `--cloudformation-execution-policies` attaches the required policy to the deployment role
 - `--trust` defines the AWS account that may deploy into the environment being bootstrapped
 
- > Important note for local development: if you get an error in this step, you may need to set `export CDK_COSMOS_CREDENTIALS_PLUGIN_DISABLE=true` (plugin assumes roles when in AWS, but when working locally you use your own credentials)
+ > Important note for local development: if you get an error in this step, you may need to set `export  CDK_OVEN_CREDENTIALS_PLUGIN_DISABLE=true` (plugin assumes roles when in AWS, but when working locally you use your own credentials)
 
 This command will need to be run once for each AWS account in your multi-account pattern, substituting the AWS_ACCOUNT environment variable each time to target each account. You will need to have the required credentials for each account either in your AWS CLI configuration or exported locally as environment variables.
 
@@ -55,3 +56,6 @@ _Sample Pattern with Management, Development & Production Accounts:_
 ## [Next Step: Deploying Cosmos Core](getting_started_core.md)
 
 ***
+
+
+mgt internet and cicd both in same account, so easy to share resources. but sharing into dev account needs the hardcoded version
