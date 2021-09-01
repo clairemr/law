@@ -40,7 +40,7 @@ Then use the below command to deploy the Cosmos CDK Toolkit resources to your en
 - `--cloudformation-execution-policies` attaches the required policy to the deployment role
 - `--trust` defines the AWS account that may deploy into the environment being bootstrapped
 
- > Important note for local development: if you get an error in this step, you may need to set `export  CDK_OVEN_CREDENTIALS_PLUGIN_DISABLE=true` (plugin assumes roles when in AWS, but when working locally you use your own credentials)
+ > Important note for local development: if you get an error in this step, you may need to set `export  CDK_OVEN_CREDENTIALS_PLUGIN_DISABLE=true` (plugin assumes roles when in AWS, but when working locally you use your own credentials). This should be resolved with (issue #303)[https://github.com/cdk-cosmos/cosmos/issues/303]
 
 This command will need to be run once for each AWS account in your multi-account pattern, substituting the AWS_ACCOUNT environment variable each time to target each account. You will need to have the required credentials for each account either in your AWS CLI configuration or exported locally as environment variables.
 
@@ -57,5 +57,3 @@ _Sample Pattern with Management, Development & Production Accounts:_
 
 ***
 
-
-mgt internet and cicd both in same account, so easy to share resources. but sharing into dev account needs the hardcoded version

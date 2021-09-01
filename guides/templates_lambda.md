@@ -17,7 +17,7 @@ To the exports, you will need to add a lambda bucket and a standard pipeline. Cu
     readonly lambdaBucket: Bucket;
     readonly codePipeline: StandardPipeline;
 
-Inside the constructor, add the below code after `super();`. StandardPipeline provides a default build spec, but you can also pass a custom one if preferred.
+Inside the constructor, add the below code after `super();`. StandardPipeline provides a default build spec, but you can also pass a custom one if preferred using the buildspec builder construct from Cosmos.
     
     //get app code repo (CodeCommit) and code bucket (s3) from cosmos
     const { codeRepo, codeBucket } = this.galaxy.cosmos;
@@ -92,12 +92,17 @@ Add tag to solar system props
       tag?: string;
     }
 
-Add the following inside the constructor, after `super();`
+Add readonly bucket inside export statement
+
+    readonly bucket: Bucket;
+
+Add the following inside the constructor, after `super();`. You will need to change the record name to reflect your app name or desired url.
 
     const { tag } = props || {};
     const { codeBucket } = this.galaxy.cosmos;
     const { vpc } = this.portal;
     const { alb, httpsListener } = this.portal.addEcs();
+    const recordName = `app.${this.portal.zone.zoneName}`;
 
     const serverDependenciesLayer = new LayerVersion(this, 'ServerDependenciesLayer', {
       code: Code.fromBucket(codeBucket, `server-layer-${tag}.zip`),
@@ -143,9 +148,15 @@ Add the following inside the constructor, after `super();`
 ### bin/main.ts
 As mentioned in the intro, this file instantiates all the resources you have defined in the above files and is where you can design your Cosmos infrastructure, including AWS accounts, stacks and pipeline stages.
 
-Add the following to imports
+Add the following to imports. This is required to update IAM policies to allow cross account access to Cosmos resources
 
-    import { AccountPrincipal } from '@aws-cdk/aws-iam';
+    import { PolicyStatement, Effect, AccountPrincipal } from '@aws-cdk/aws-iam';
+
+You will need to change the app name from 'Demo' in the below line:
+
+    const cosmos = new AppCosmosStack(app, 'Demo', {
+      env: mgtEnvConfig,
+    });  
 
 To the cosmos stack (after `const cosmos`), add a resource policy to the code bucket. You will need to add all environments as account principals so they can access the zip file of the lambda code, which is stored in the management account.
 
@@ -169,7 +180,7 @@ For each solar system, create a new solar system stack, ensuring the name matche
 
     // // Extend the Dev SolarSystem, by creating service
     // const dev = new AppSolarSystemStack(devGalaxy, 'Dev', {
-    //   tag: process.env.APP_BUILD_VERSION || 'v0.0.0',,
+    //   tag: process.env.APP_BUILD_VERSION || 'v0.0.0',
     // });
 
  > __Important note with solar systems:__ Currently, solar systems must be commented out in the first run of the bootstrapper. You can then uncomment solar systems, push up your changes and re-run the cdk pipeline. See [Getting Started - Extension # Solar Systems](getting_started_extension#solar-systems) for more information. 
@@ -206,6 +217,11 @@ As with the solar system, this should be commented out in the first run (as the 
         stacks: [ciCd],
         isManualApprovalRequired: false,
     });
+
+
+## Internet connectivity
+Lambdas within a VPC cannot by default access the internet. If you require that functionality, please refer to this (AWS guide)[https://aws.amazon.com/premiumsupport/knowledge-center/internet-access-lambda-function/]
+
 
 ## Final Steps
 At the end of this guide, you should have all the resources needed to upload a lambda function to your bootstrapped extension. You will be able to test it out by uploading your app to the CodeCommit app-*-code-repo that will be created when you bootstrap your extension and running the code pipeline.

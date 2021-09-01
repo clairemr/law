@@ -46,9 +46,16 @@ _You can also find this url in CodeCommit_
 
 Your Extension now has a CDK & Code Pipeline. Any further changes may be deployed using the Extension's own CDK Pipeline.
 
+### Solar Systems
+
 Solar system needs to be deployed after bootstrapping
 Pipeline currently needs to be run twice, first to make changes to the pipeline, then to deploy the dev solar system. Will hopefully be fixed when [issue 310](https://github.com/cdk-cosmos/cosmos/issues/310) is implemented.
 
+Uncomment solar system, add changes and push up. Re-run cdk pipeline. Required because ext imports a bunch of stuff from the core. portal = imports from core. we got the resources defined in core when we create the solar system. we create them in the core but scoping them to the dev galaxy (dev acct). https listenser already there as part of the dev galaxy core Core*DevDevSolarSystem (includes alb, https listener, vpc etc), imported via naming convention through portal to be used in ext. all exts in this solar system will use the same alb. this.portal.addEcs() is a way of adding the functioanlity to these clusters
+
+
+code pulls from the repo (build stage), then deploys to the various envs
+cdk pipeline just deploys cdk
 
 Note on deploy stages: can have a deploy stage for each env in pipeline, can combine stacks or can keep them all in the final, catch all deploy stage <-- does this redeploy things that have already been deployed on this run of the pipeline?
 Splitting them up allows you to retry sections and not have the entire thing rollback if one stack fails (my assumption)
@@ -59,11 +66,8 @@ This is the expected behaviour. Deploying CiCd changes requires re-running the p
 
 Alternatively, you can use environmental overrides to just deploy the cicd stack. Start build with overrides, then set stack to `-e *CiCd*` <-- later version (1.104+) won't accept wildcard, use full name of stack
 
-If you get an error 'AppCosmosSandboxDevDevSolarSystem failed: Error [ValidationError]: Unable to fetch parameters [/App/CosmosSandbox/Dev/Dev/VersionState] from parameter store for this account.' when running the cdk pipeline to add the solar systems, run the code pipeline instead.
+If you get an error 'AppCosmosSandboxDevDevSolarSystem failed: Error [ValidationError]: Unable to fetch parameters [/App/CosmosSandbox/Dev/Dev/VersionState] from parameter store for this account.' when running the cdk pipeline to add the solar systems, run the code pipeline first.
 
-## [Next Steps: Deploy Your First App]()
+<!-- ## [Next Steps: Deploy Your First App]() -->
 
-
-Notes
-- You won't get much information about the bootstrapping process from your terminal. You can, however, view the logs in CloudFormation to troubleshoot if needed.
 ***

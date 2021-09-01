@@ -21,3 +21,5 @@ Export your account credentials into the terminal.
 git remote set-url origin https://git-codecommit.ap-southeast-2.amazonaws.com/v1/repos/app-cosmossandbox-code-repo
 
 Run your app cdk & code pipelines
+
+Your app should then be live at https://dev.your-tld.iagcloud.net/demo where _your-tld_ is the top level domain you supplied in bin/main.ts of your cosmos core <-- how do you add the app name? Surely this will clash if you create a second extension
