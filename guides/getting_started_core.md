@@ -16,6 +16,7 @@ _If you see error subprocess 127, try copying the plaintext here:_ npx cdk --app
 
 _If this step doesn't deploy the resources needed (e.g. no new stacks are created), change line 5 in @cosmos-building-blocks/common/lib/cdk-toolkit/bootstrap-app.js to const stacks = process.env.STACKS || '--all';_
 ^this should be resolved in an upcoming bug fix, see issue [https://github.com/cdk-cosmos/cosmos/issues/304](#304)
+alternatively, use STACKS="--all" npx cdk --app "node_modules/@cosmos-building-blocks/common/lib/cdk-toolkit/bootstrap-app.js" deploy
 
 A CodeCommit repository to house this newly customised Core was created as part of the bootstrapping process above. Update the git repository in this Core to point to the new CodeCommit repository. Replacing the _your-region_ section with the region you selected in Step 3, run the following command:
 git remote set-url origin "https://git-codecommit.your-region.amazonaws.com/v1/repos/core-cdk-repo"

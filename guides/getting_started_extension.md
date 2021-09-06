@@ -28,8 +28,11 @@ _If you see "fail: Bucket named 'cdk-toolkit-assets-YOURACCOUNTNUMBER-ap-southea
 
 _As with core, if this step doesn't deploy the resources needed (e.g. no new stacks are created), change line 5 in @cosmos-building-blocks/common/lib/cdk-toolkit/bootstrap-app.js to const stacks = process.env.STACKS || '--all';_
 ^this should be resolved in an upcoming bug fix, see issue [https://github.com/cdk-cosmos/cosmos/issues/304](#304)
+alternatively, use STACKS="--all" npx cdk --app "node_modules/@cosmos-building-blocks/common/lib/cdk-toolkit/bootstrap-app.js" deploy
 
-This will archive this Extension and pass it as an asset to the Cosmos CDK Toolkit s3 bucket in your master account, and trigger the CodeBuild job to bootstrap your Extension. A CodeCommit repository to house this newly customised Extension was created as part of the bootstrapping process above. Update the git repository in this Extension to point to the new CodeCommit respository. Replacing the _your-region_ section with the region you selected in Step 3 and the _your-app_ section with the name you gave your project at 
+This will archive this Extension and pass it as an asset to the Cosmos CDK Toolkit s3 bucket in your master account, and trigger the CodeBuild job to bootstrap your Extension. You can watch the CodeBuild project logs (cdk-toolkit-bootstrap-project) and CloudFormation to see what resources are being created.
+
+A CodeCommit repository to house this newly customised Extension was created as part of the bootstrapping process above. Update the git repository in this Extension to point to the new CodeCommit respository. Replacing the _your-region_ section with the region you selected in Step 3 and the _your-app_ section with the name you gave your project at 
      -   const cosmos = new AppCosmosStack(app, '_your application name here_', {
       -      env: mgtEnvConfig,
      -   });

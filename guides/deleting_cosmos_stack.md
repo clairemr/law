@@ -25,3 +25,6 @@ __MGT S3__
 
 If you have created other resources that can't be deleted by `cdk destroy`, you will need to manually delete them as well. Check Cloud Formation logs for events with the status DELETE_SKIPPED. Failure to do so will result in future errors with bootstrapping due to name space issues (if you are pulling down a stack to rebuild it) and may result in unnecessary costs as you're paying to store resources you don't need.
 
+## Route 53
+Before you can delete a hosted zone, you must first delete all resource record sets except the NS and SOA resource record sets for the zone apex.
+(HostedZoneNotEmpty 400: The specified hosted zone contains non-required resource record sets and so cannot be deleted.)

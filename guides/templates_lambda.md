@@ -78,53 +78,66 @@ This file will remain unchanged, as we don't need to create any resources at the
 
 You will need to import the following constructs:
 
-    import { Bucket } from '@aws-cdk/aws-s3';
     import { SolarSystemExtensionStack, SolarSystemExtensionStackProps } from '@cdk-cosmos/core';
-    import { Function, Runtime, Code, LayerVersion } from '@aws-cdk/aws-lambda';
-    import { Key } from '@aws-cdk/aws-kms';
-    import { ApplicationTargetGroup, ListenerCondition } from '@aws-cdk/aws-elasticloadbalancingv2';
-    import { LambdaTarget } from '@aws-cdk/aws-elasticloadbalancingv2-targets';
+    import { SsmState } from '@cosmos-building-blocks/common';
+    import { Function, Runtime, Code } from '@aws-cdk/aws-lambda';
     import { AppGalaxyStack } from '.';
+
 
 Add tag to solar system props
 
     export interface AppSolarSystemProps extends SolarSystemExtensionStackProps {
-      tag?: string;
+      appVersion?: string;
     }
 
 Add readonly bucket inside export statement
 
     readonly bucket: Bucket;
 
-Add the following inside the constructor, after `super();`. You will need to change the record name to reflect your app name or desired url.
+Add the following inside the constructor, after `super();`. Here, you are using the codeBucket from `lib/cosmos.ts` and the shared vpc through the portal construct. version state is managed through a CDK Cosmos feature.
 
-    const { tag } = props || {};
+    const { appVersion } = props || {};
     const { codeBucket } = this.galaxy.cosmos;
     const { vpc } = this.portal;
-    const { alb, httpsListener } = this.portal.addEcs();
-    const recordName = `app.${this.portal.zone.zoneName}`;
-
-    const serverDependenciesLayer = new LayerVersion(this, 'ServerDependenciesLayer', {
-      code: Code.fromBucket(codeBucket, `server-layer-${tag}.zip`),
-      compatibleRuntimes: [Runtime.NODEJS_12_X],
+    
+    const versionState = new SsmState(this, 'VersionState', {
+      name: '/' + this.nodeId('VersionState', '/'),
+      value: appVersion,
     });
 
     const serverFunction = new Function(this, 'ServerFunction', {
       handler: 'app.lambdaHandler',
-      code: Code.fromBucket(codeBucket, `server-${tag}.zip`),
+      code: Code.fromBucket(codeBucket, `function-${appVersion}.zip`),
       runtime: Runtime.NODEJS_12_X,
-      layers: [serverDependenciesLayer],
       environment: {
         REGION: 'ap-southeast-2',
       },
       vpc,
     });
 
+> Note: This template uses the SsmState construct, which has an active issue in the Cosmos backlog - (Issue #318)[https://github.com/cdk-cosmos/cosmos/issues/318]. Currently, you will need to pass a hardcoded appVersion on the first run of the pipeline so that a parameter is added to the AWS Parameter Store in each solar system. See details below on setting up the sample lambda app.
+
+    const versionState = new SsmState(this, 'VersionState', {
+      name: '/' + this.nodeId('VersionState', '/'),
+      value: 1,
+    });
+
+#### To add front end you will need a few extra resources:
+imports
+
+    import { RecordTarget, ARecord } from '@aws-cdk/aws-route53';
+    import { LoadBalancerTarget } from '@aws-cdk/aws-route53-targets';
+    import { ApplicationTargetGroup, ListenerCondition } from '@aws-cdk/aws-elasticloadbalancingv2';
+    import { LambdaTarget } from '@aws-cdk/aws-elasticloadbalancingv2-targets';
+
+in constructor
+
+    const { alb, httpsListener } = this.portal.addEcs();
+    const recordName = `slackbot.${this.portal.zone.zoneName}`;
+
     const serverTargetGroup = new ApplicationTargetGroup(this, 'ServerTargetGroup', {
       targets: [new LambdaTarget(serverFunction)],
     });
-
-    const serverTargetConditions = [ListenerCondition.hostHeaders([recordName])];
 
     httpsListener.addTargetGroups('ServerTargets', {
       conditions: [ListenerCondition.hostHeaders([recordName])],
@@ -137,11 +150,6 @@ Add the following inside the constructor, after `super();`. You will need to cha
       recordName,
       target: RecordTarget.fromAlias(new LoadBalancerTarget(alb)),
     });
-
-
-
-
-
 
 
 
@@ -225,6 +233,37 @@ Lambdas within a VPC cannot by default access the internet. If you require that 
 
 ## Final Steps
 At the end of this guide, you should have all the resources needed to upload a lambda function to your bootstrapped extension. You will be able to test it out by uploading your app to the CodeCommit app-*-code-repo that will be created when you bootstrap your extension and running the code pipeline.
+
+> Note: This template uses the SsmState construct, which has an active issue in the Cosmos backlog - (Issue #318)[https://github.com/cdk-cosmos/cosmos/issues/318]. Currently, you will need to pass a hardcoded appVersion on the first run of the pipeline so that a parameter is added to the AWS Parameter Store in each solar system.
+
+
+
+> Note: While (Issue #318)[https://github.com/cdk-cosmos/cosmos/issues/318] is unresolved, you will need to manually zip up and push your lambda function the first time, to create the app version parameter. If you are using the sample lambda app, you will be able to use the commands in the Makefile to achieve this:
+
+- (Bootstrap)[getting_started_extension.md] the template you have just created
+- Set versionState to `"1"` in `lib/solar-system.ts`
+
+    const versionState = new SsmState(this, 'VersionState', {
+      name: '/' + this.nodeId('VersionState', '/'),
+      value: 1,
+    });
+
+- Clone the sample lambda app and `git set-url remote origin https://your-code-repo` where your-code-repo is the url of the code repository created in the bootstrapping process
+- Export the name of the s3 bucket created in the management account as CODE_BUCKET and the app build 
+
+    export CODE_BUCKET=app-demo-code-bucket
+    export APP_BUILD_VERSION=1
+
+- Use the commands in the Makefile to build, zip & push the sample app up to your repo
+
+    make install
+    make build
+    make zip
+    make push
+
+Once you've made this first commit, you should be able to set `versionState` back to `appVersion` to update and pull the latest version of the app from the parameter store.
+
+You should now be able to view and test your lambda function from each environment you've deployed it into!
 
 #### Once you have completed your template set up, follow the instructions in the included readme file or head back to the [Getting Started - Extension](getting_started_extension.md) guide for more information on bootstrapping your new CDK-Cosmos Extension
 
