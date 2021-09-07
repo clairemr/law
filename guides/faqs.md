@@ -50,3 +50,28 @@ then we have galaxies which are account scoped. mgtGalaxy = mgt acct etc
 then solar systems core stacks = arbitrary groups of resources, usually scoped to (up to you what they're scoped to) but in devops acct we have lots of apps just in dev. devMinion ss is to contain minions
 
 back in ext, a lot of the stuff in soalr system is just guessing what you might need, e.g. new templates will covers extensions for serverless app, or fargate
+
+
+how to get cidr ranges for new cosmos core
+
+_If you see error subprocess 127 when bootstrapping core or extensions, try copying the plaintext here:_ npx cdk --app "node_modules/@cosmos-building-blocks/common/lib/cdk-toolkit/bootstrap-app.js" deploy
+
+_If you see "fail: Bucket named 'cdk-toolkit-assets-YOURACCOUNTNUMBER-ap-southeast-2' exists, but not in account YOURACCOUNTNUMBER. Wrong account?" check your IAM permissions_
+
+
+
+
+
+Required because ext imports a bunch of stuff from the core. portal = imports from core. we got the resources defined in core when we create the solar system. we create them in the core but scoping them to the dev galaxy (dev acct). https listenser already there as part of the dev galaxy core Core*DevDevSolarSystem (includes alb, https listener, vpc etc), imported via naming convention through portal to be used in ext. all exts in this solar system will use the same alb. this.portal.addEcs() is a way of adding the functioanlity to these clusters
+
+
+code pulls from the repo (build stage), then deploys to the various envs
+cdk pipeline just deploys cdk
+
+Note on deploy stages: can have a deploy stage for each env in pipeline, can combine stacks or can keep them all in the final, catch all deploy stage <-- does this redeploy things that have already been deployed on this run of the pipeline?
+Splitting them up allows you to retry sections and not have the entire thing rollback if one stack fails (my assumption)
+
+If you have a deploy CiCd stage in your pipeline, when you make changes to the pipeline, it will stop on the CiCd stage and show as 'Cancelled', even if successful. If you try to retry the stage, you will get an error like this:
+`The stage named DeployCiCd in the App-MyApp-Cdk-Pipeline pipeline can't be retried now. Either it contains no failed actions, the execution '...' is already superseded, or the pipeline definition has changed since the action(s) failed.`
+
+This is the expected behaviour. Deploying CiCd changes requires re-running the pipeline so those stages run, so putting this stage early in the pipeline means you don't have to wait for the entire pipeline to run just so you can start it again.

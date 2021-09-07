@@ -22,4 +22,14 @@ git remote set-url origin https://git-codecommit.ap-southeast-2.amazonaws.com/v1
 
 Run your app cdk & code pipelines
 
-Your app should then be live at https://dev.your-tld.iagcloud.net/demo where _your-tld_ is the top level domain you supplied in bin/main.ts of your cosmos core <-- how do you add the app name? Surely this will clash if you create a second extension
+Your app should then be live at https://dev.your-tld.site.net/demo where _your-tld_ is the top level domain you supplied in bin/main.ts of your cosmos core and _demo_ is the path pattern passed to the ECS service in `lib/solar-system.ts`
+
+
+## Congratulations, you've bootstrapped your first Cosmos app!
+
+### Next Steps
+The key benefit of CDK Cosmos is patternising templates that can be used across your organisation. To begin building out sample templates for Lambda, or for more details about the resources included in the ECR template used in this guide, see the Template Building guides.
+
+***
+
+## [Next Step: Intro to Template Building](templates_intro.md)
