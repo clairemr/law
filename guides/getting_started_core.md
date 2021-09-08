@@ -4,6 +4,8 @@ title: "Getting Started with the Core"
 sidebar_label: "Core"
 ---
 
+In the previous step, we bootstrapped the bootstrap code. This gave us IAM roles and a codebuild project, which we can now use to bootstrap Cosmos into the account defined in your lib/main.ts file.
+
 In the previous step, we bootstrapped the bootstrap toolkit. This gave us IAM roles and a codebuild project, which we can now use to bootstrap Cosmos into the management account defined in your `lib/main.ts` file.
 
 To bootstrap your Cosmos core, run the below command in the base directory of your project, with credentials for the master account exported. You will need to be using an IAM role with (operator permissions)).
