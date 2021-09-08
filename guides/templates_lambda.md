@@ -10,24 +10,31 @@ This guide is designed to walk you through adding resources to the [blank templa
 You will need to import AWS s3 bucket and StandardPipeline from the CDK-Cosmos building blocks.
 
     import { Bucket } from '@aws-cdk/aws-s3';
-    import { StandardPipeline } from '@cosmos-building-blocks/pipeline';
+    import { BuildSpecBuilder, StandardPipeline } from '@cosmos-building-blocks/pipeline';
 
 To the exports, you will need to add a lambda bucket and a standard pipeline. Currently recommending standard pipeline for lambda, which requires the use of a Makefile in your app code, but in future there may be a custom lambda pipeline. 
 
     readonly lambdaBucket: Bucket;
     readonly codePipeline: StandardPipeline;
 
-Inside the constructor, add the below code after `super();`. StandardPipeline provides a default build spec, but you can also pass a custom one if preferred using the buildspec builder construct from Cosmos.
+Inside the constructor, add the below code after `super();`. StandardPipeline provides a default build spec (`buildSpec: StandardPipeline.DefaultBuildSpec()` to use), but we're passing a custom one to build the lambda function.
     
     //get app code repo (CodeCommit) and code bucket (s3) from cosmos
     const { codeRepo, codeBucket } = this.galaxy.cosmos;
+
+    const buildSpec = new BuildSpecBuilder()
+      .addRuntime('nodejs', '12')
+      .addCommands('pre_build', 'make install', 'export APP_BUILD_VERSION=$(make version)')
+      .addCommands('build', 'make build')
+      .addCommands('post_build', `export CODE_BUCKET=${codeBucket.bucketName}`, 'make zip', 'make push')
+      .addExportedVariables('APP_BUILD_VERSION');
 
     //StandardPipeline requires a Makefile in your app code
     this.codePipeline = new StandardPipeline(this, 'CodePipeline', {
       pipelineName: this.galaxy.cosmos.nodeId('Code-Pipeline', '-'),
       buildName: this.galaxy.cosmos.nodeId('Code-Build', '-'),
       codeRepo: codeRepo,
-      buildSpec: StandardPipeline.DefaultBuildSpec(),
+      buildSpec,
     });
 
     //Grant necessary code bucket permissions
@@ -105,6 +112,7 @@ Add the following inside the constructor, after `super();`. Here, you are using 
       value: appVersion,
     });
 
+    //handler must be the same as the export from your app
     const serverFunction = new Function(this, 'ServerFunction', {
       handler: 'app.lambdaHandler',
       code: Code.fromBucket(codeBucket, `function-${appVersion}.zip`),
@@ -232,13 +240,10 @@ Lambdas within a VPC cannot by default access the internet. If you require that 
 
 
 ## Final Steps
-At the end of this guide, you should have all the resources needed to upload a lambda function to your bootstrapped extension. You will be able to test it out by uploading your app to the CodeCommit app-*-code-repo that will be created when you bootstrap your extension and running the code pipeline.
 
-> Note: This template uses the SsmState construct, which has an active issue in the Cosmos backlog - (Issue #318)[https://github.com/cdk-cosmos/cosmos/issues/318]. Currently, you will need to pass a hardcoded appVersion on the first run of the pipeline so that a parameter is added to the AWS Parameter Store in each solar system.
+At the end of this guide, you should have all the resources needed to upload a lambda function to your bootstrapped extension. You will be able to test it out by uploading the [sample lambda app](https://github.com/cdk-cosmos/cosmos-sample-lambda-app) or your own app to the CodeCommit app-*-code-repo that will be created when you bootstrap your extension and running the code pipeline.
 
-
-
-> Note: While (Issue #318)[https://github.com/cdk-cosmos/cosmos/issues/318] is unresolved, you will need to manually zip up and push your lambda function the first time, to create the app version parameter. If you are using the sample lambda app, you will be able to use the commands in the Makefile to achieve this:
+> Note: This template uses the SsmState construct, which has an active issue in the Cosmos backlog - (Issue #318)[https://github.com/cdk-cosmos/cosmos/issues/318]. Currently, you will need to pass a hardcoded appVersion on the first run of the pipeline so that a parameter is added to the AWS Parameter Store in each solar system. You may also need to manually zip up and push your lambda function the first time, to create the app version parameter. If you are using the sample lambda app, you will be able to use the commands in the Makefile to achieve this:
 
 - (Bootstrap)[getting_started_extension.md] the template you have just created
 - Set versionState to `"1"` in `lib/solar-system.ts`
