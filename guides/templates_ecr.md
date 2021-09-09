@@ -1,5 +1,5 @@
 ---
-id: "building_ecr_template"
+id: "templates_ecr"
 title: "Building an ECR template"
 sidebar_label: "ECR Template"
 ---

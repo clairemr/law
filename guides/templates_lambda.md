@@ -1,5 +1,5 @@
 ---
-id: "building_lambda_template"
+id: "templates_lambda"
 title: "Building a Lambda Template"
 sidebar_label: "Lambda Template"
 ---
