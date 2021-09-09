@@ -11,7 +11,7 @@ module.exports = {
       title: "Cdk Cosmos",
       logo: {
         alt: "Cdk Cosmos",
-        src: "img/logo.svg",
+        src: "img/cdk-cosmos-crop.png",
       },
       items: [
         {
