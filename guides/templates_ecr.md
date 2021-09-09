@@ -127,7 +127,7 @@ Add the following to imports
 
     import { AccountPrincipal } from '@aws-cdk/aws-iam';
 
-In this file, you set the environment configuration for each galaxy and then instantiate a galaxy per environment. Examples are included in the blank template. Duplicate these and replace the names as needed. It is essential that names match those set in your core CDK-Cosmos, e.g. `Dev` must be consistently named.
+In this file, you set the environment configuration for each galaxy and then instantiate a galaxy per account. Examples are included in the blank template. Duplicate these and replace the names as needed. It is essential that names match those set in your core CDK-Cosmos, e.g. `Dev` must be consistently named.
 
     const devEnvConfig = { account: '2222', region: 'ap-southeast-2' };
     const devGalaxy = new AppGalaxyStack(cosmos, 'Dev', {
@@ -166,7 +166,7 @@ Again optionally, you can also add a separate stage in the CDK pipeline to targe
     //   isManualApprovalRequired: false,
     // });
 
-As with the solar system, this should be commented out in the first run (as the solar system targeted by this pipeline stage has not yet been created). When you re-run the cdk pipeline, it will change itself to add the new stage. Changes to the pipeline will make it pause, and you will have to re-run it again. This is a property of CodePipeline, and something that may be addressed in future versions of CDK-Cosmos by implementing the new CDK Pipeline construct provided by AWS. In the meantime, the blank template includes an optional CiCd stage in the pipeline, which will allow you to deploy any changes needed to the CiCd infrastructure first and minimise waiting time on additional runs of the pipeline.
+As with the solar system, this should be commented out in the first run of the pipeline (as the solar system targeted by this pipeline stage has not yet been created). Adding a new stage to the pipeline will change it's definition, which will make it pause, and you will have to re-run the pipeline. This is a property of CodePipeline, and something that may be addressed in future versions of CDK-Cosmos by implementing the new CDK Pipeline construct provided by AWS. In the meantime, the blank template includes an optional CiCd stage in the pipeline, which will allow you to deploy any changes needed to the CiCd infrastructure first and minimise waiting time on additional runs of the pipeline.
 
     //Optional: Add CiCd deploy stage to code pipeline to deploy CiCd before other stacks
     ciCd.addCdkDeployEnvStageToCodePipeline({

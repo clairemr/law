@@ -185,7 +185,7 @@ To the cosmos stack (after `const cosmos`), add a resource policy to the code bu
       })
     );
 
-In this file, you set the environment configuration for each galaxy and then instantiate a galaxy per environment. Examples are included in the blank template. Duplicate these and replace the names as needed. It is essential that names match those set in your core CDK-Cosmos, e.g. `Dev` must be consistently named.
+In this file, you set the environment configuration for each galaxy and then instantiate a galaxy per account. Examples are included in the blank template. Duplicate these and replace the names as needed. It is essential that names match those set in your core CDK-Cosmos, e.g. `Dev` must be consistently named.
 
     const devEnvConfig = { account: '2222', region: 'ap-southeast-2' };
     const devGalaxy = new AppGalaxyStack(cosmos, 'Dev', {

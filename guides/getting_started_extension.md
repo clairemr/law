@@ -28,7 +28,7 @@ As with core cosmos, fill out `bin/main.ts` with your account configuration and 
 
 This will archive this Extension and pass it as an asset to the Cosmos CDK Toolkit s3 bucket in your master account, and trigger the CodeBuild job to bootstrap your Extension. You can watch the CodeBuild project logs (cdk-toolkit-bootstrap-project) and CloudFormation to see what resources are being created.
 
-A CodeCommit repository to house this newly customised Extension was created as part of the bootstrapping process above. Update the git repository in this Extension to point to the new CodeCommit respository. Replacing the _your-region_ section with the region you selected in Step 3 and the _your-app_ section with the name you gave your project in `bin/main.ts `, run the following command:
+A CodeCommit repository to house this newly customised Extension was created as part of the bootstrapping process above. Update the git repository in this Extension to point to the new CodeCommit respository. Replacing the __your-region__ section with the region you selected in Step 3 and the __your-app__ section with the name you gave your project in `bin/main.ts `, run the following command:
 
     git remote set-url origin "https://git-codecommit.your-region.amazonaws.com/v1/repos/app-your-app-cdk-repo"
 
@@ -43,7 +43,7 @@ Your Extension now has a CDK & Code Pipeline. Any further changes may be deploye
 ### Solar Systems
 As with core, the Solar Systems need to be deployed after bootstrapping as they are dependent on Cosmos and Galaxy resources created on the initial run of the pipeline. To deploy, uncomment the solar system, push up your changes and re-run the App CDK pipeline. 
 
-> If you get an error 'AppCosmosSandboxDevDevSolarSystem failed: Error [ValidationError]: Unable to fetch parameters [/App/CosmosSandbox/Dev/Dev/VersionState] from parameter store for this account.' when running the cdk pipeline to add the solar systems, run the code pipeline first.
+> If you get an error 'AppDemoDevDevSolarSystem failed: Error [ValidationError]: Unable to fetch parameters [/App/Demo/Dev/Dev/VersionState] from parameter store for this account.' when running the cdk pipeline to add the solar systems, run the code pipeline first.
 
 #### Deploy Stages
 This template includes a separate deploy stage in the code pipeline for each new solar system. The below code would deploy the `dev` and `tst` stacks.
@@ -53,7 +53,7 @@ This template includes a separate deploy stage in the code pipeline for each new
         stacks: [dev, tst],
     });
 
-This is optional. The template includes a final deploy stage that will deploy all stacks, however, separating out stacks allows you to retry sections - for example, you may wish to run the dev stack to test your changes before approving a roll out to prod. It is also recommended to include a CiCd stage at the start of the pipeline, to minimise additional runs of the pipeline. You can add stages to both the Code pipeline (`ciCd.addCdkDeployEnvStageToCodePipeline`) and the CDK pipeline (`ciCd.addCdkDeployEnvStageToCdkPipeline`) for your extension.
+This is optional. The template includes a final deploy stage that will deploy all stacks, however, separating out stacks allows you to retry sections - for example, you may wish to run the dev stack to test your changes before approving a roll out to prod. It is also recommended to include a CiCd stage at the start of the pipeline, to minimise additional runs of the pipeline. You can add stages to both the Code pipeline (`ciCd.addCdkDeployEnvStageToCodePipeline`) and the CDK pipeline (`ciCd.addCdkDeployEnvStageToCdkPipeline`) for your extension, if you have defined those functions in `lib/ci-cd-solar-system.ts`. See (cosmos-blank-extension-cdk)[https://github.com/cdk-cosmos/cosmos-blank-extension-cdk/blob/master/lib/ci-cd-solar-system.ts] for an example of this if your template does not include it.
 
 ### Next Steps
 Once you've bootstrapped your Cosmos extension, you can continue on to deploy a sample Hello World app.

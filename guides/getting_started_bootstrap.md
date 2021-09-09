@@ -16,7 +16,7 @@ This is where you will identify the accounts in the Cosmos pattern, e.g. mgt, de
 1. Complete the configuration objects with your account numbers and regions
 2. Change the project name from `Demo` to the name of your Core
 3. Replace the TLD (top level domain) with the correct one for your project (e.g. demoapps.mycosmosproject.com)
-3. Add the appropriate CIDR ranges 
+4. Add the appropriate CIDR ranges 
 
 ### Bootstrap the bootstrapper
 At this point you have reached the minimal requirements to bootstrap your Cosmos Core. We don't recommend adding any further resources until the bootstrapping process is complete. When bootstrapping the bootstrapper, you will need to be using an IAM role able to create and edit policies.
@@ -45,7 +45,7 @@ Then use the below command to deploy the Cosmos CDK Toolkit resources to your en
 This command will need to be run once for each AWS account in your multi-account pattern, substituting the AWS_ACCOUNT environment variable each time to target each account. You will need to have the required credentials for each account either in your AWS CLI configuration or exported locally as environment variables.
 
 #### What you have now
-This is the initial step required to deploy Cosmos into your AWS accounts. At this point, you will have a bootstrap Code Build project in your master account, and a bootstrap IAM role in each account (including master). This role will be used to bootstrap your Cosmos Core and Extensions. 
+This is the initial step required to deploy Cosmos into your AWS accounts. At this point, you will have a bootstrap CodeBuild project in your master account, and a bootstrap IAM role in each account (including master). This role will be used to bootstrap your Cosmos Core and Extensions. 
 
 Please note that these resources are created outside of your Cosmos stacks, as they are used to deploy the stacks. Therefore, if you delete Cosmos stacks in future, these roles will remain in the accounts unless manually deleted.
 
