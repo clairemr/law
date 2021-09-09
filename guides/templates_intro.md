@@ -1,5 +1,5 @@
 ---
-id: "building_template"
+id: "templates_intro"
 title: "Building a template - Intro"
 sidebar_label: "Building Your Own Templates"
 ---
